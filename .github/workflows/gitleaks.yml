@@ -1,0 +1,42 @@
+name: GitLeaks Secret Scan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  gitleaks:
+    name: Scan repository for secrets
+    runs-on: [self-hosted]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run GitLeaks
+        run: |
+          docker run --rm -v "${GITHUB_WORKSPACE}:/repo" zricethezav/gitleaks:v8.27.2 git /repo --verbose
+```[cite: 2]
+
+3. Ajouter le troisième secret dans `app.py`[cite: 2] :
+```bash
+echo 'NEW_API_TOKEN = "REDACTED_API_TOKEN"' >> app.py
+```[cite: 2]
+
+4. Valider et envoyer sur GitHub[cite: 2] :
+```bash
+git add .
+```[cite: 2]
+
+```bash
+git commit -m "Add test secret and workflow"
+```[cite: 2]
+
+```bash
+git push origin main
+```[cite: 2]
+
+Dès que le push est terminé, confirme-le pour vérifier le résultat du pipeline et passer à l'**Exercice 4** (nettoyage de l'historique avec `git-filter-repo`)[cite: 2].
