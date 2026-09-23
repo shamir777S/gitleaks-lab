@@ -1,0 +1,4 @@
+[[rules]]
+id = "epita-api-token"
+description = "EPITA training API token"
+regex = '''EPITA_[A-Za-z0-9]{32}'''
